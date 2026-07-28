@@ -53,7 +53,6 @@ Kp5, Ki5, Kd5
 - ROS 2 Jazzy
 - Gazebo Harmonic
 - Python 3
-- C++17
 - `ros_gz_sim`
 - `ros_gz_bridge`
 - `gz_ros2_control`
@@ -219,11 +218,6 @@ Interpretación:
 - `SCV = 0`: sin violaciones detectadas.
 - código de salida `0`: ejecución correcta.
 
-## Documentación
-
-- [Arquitectura](docs/ARCHITECTURE.md)
-- [Guía de uso](docs/USAGE.md)
-- [Validación](docs/VALIDATION.md)
 
 ## Limitaciones
 
