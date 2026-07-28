@@ -1,0 +1,49 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    scorbot_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+scorbot_arm_controller:
+  ros__parameters:
+    joints:
+      - j1
+      - j2
+      - j3
+      - j4
+      - j5
+
+    command_interfaces:
+      - effort
+
+    state_interfaces:
+      - position
+      - velocity
+    gains:
+      j1:
+        p: 0.0
+        i: 0.0
+        d: 0.0
+      j2:
+        p: 0.0
+        i: 0.0
+        d: 0.0
+      j3:
+        p: 0.0
+        i: 0.0
+        d: 0.0
+      j4:
+        p: 0.0
+        i: 0.0
+        d: 0.0
+      j5:
+        p: 0.0
+        i: 0.0
+        d: 0.0
+
+    allow_partial_joints_goal: false

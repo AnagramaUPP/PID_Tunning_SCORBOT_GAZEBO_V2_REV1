@@ -1,0 +1,494 @@
+<?xml version="1.0"?>
+
+<robot name="scorbot">
+
+  <!-- ======================================================= -->
+  <!-- NOTA GENERAL                                           -->
+  <!-- ======================================================= -->
+  <!-- https://wiki.ros.org/urdf/XML
+    visual    : Malla usada para mostrar el robot en RViz.
+    collision : Malla usada para detectar colisiones en Gazebo.
+    inertial  : Propiedades físicas del eslabón.
+
+    En inertial:
+    origin  -> centro de masa respecto al SC del link.
+    mass    -> masa del eslabón en kg.
+    inertia -> matriz de inercia respecto al centro de masa.
+
+    En joint:
+    origin  -> ubicación y orientación del SC hijo respecto al SC padre.
+    axis    -> eje local de rotación o desplazamiento.
+    limit   -> límites articulares.
+
+    En limit:
+    lower    -> límite inferior en radianes.
+    upper    -> límite superior en radianes.
+    effort   -> torque máximo permitido en N·m.
+    velocity -> velocidad máxima permitida en rad/s.
+  -->
+
+  <!-- ======================================================= -->
+  <!-- SISTEMA DE REFERENCIA GLOBAL                           -->
+  <!-- ======================================================= -->
+
+  <link name="world"/>
+
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- BASE_LINK                                              -->
+  <!-- ======================================================= -->
+
+  <link name="base_link">
+    <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN BASE               -->
+    <!-- ===================================================== -->
+    <inertial>
+      <origin xyz="0.00063327 0.00002002 0.0860836" rpy="0 0 0"/>
+      <mass value="5.64418463"/>
+      <inertia ixx="0.03159046" ixy="0.0" ixz="0.0"
+               iyy="0.03159045" iyz="0.000000859"
+               izz="0.02690899"/>
+    </inertial>
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/base_link.stl"/>
+      </geometry>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- GEOMETRÍA DE COLISIÓN                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/base_link.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<!-- ======================================================= -->
+<!-- ARTICULACIÓN J1                                        -->
+<!-- ======================================================= -->
+<!-- Tipo de articulación: Revoluta                         -->
+<!-- Relación entre sistemas de coordenadas: SC{0} to SC{1} -->
+<!-- Torque motor: 15 oz·in = 0.106 N·m                    -->
+<!-- Reductor J1: 127.1 : 1                                -->
+<!-- Torque estimado a la salida: 0.106 × 127.1 = 13.47 N·m -->
+<!-- Rango angular: 310° = ±155°                           -->
+<!-- Conversión: ±155° = ±2.705 rad                        -->
+<!-- ======================================================= -->
+
+  <joint name="j1" type="revolute">
+    <origin xyz="0 0 0.19" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.705" upper="2.705" effort="10" velocity="2.0"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- LINK_1                                                 -->
+  <!-- ======================================================= -->
+
+  <link name="link_1">
+ <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN                    -->
+    <!-- ===================================================== -->
+    <inertial>
+      <origin xyz="-0.03930974 0.0 0.07464813" rpy="0 0 0"/>
+      <mass value="0.76082182"/>
+      <inertia ixx="0.00625249" ixy="0.0" ixz="0.00099059"
+               iyy="0.00574761" iyz="0.0"
+               izz="0.00805851"/>
+    </inertial>
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_1.stl"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0.0 1.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- GEOMETRÍA DE COLISIÓN                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_1.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<!-- ======================================================= -->
+<!-- ARTICULACIÓN J2                                        -->
+<!-- ======================================================= -->
+<!-- Tipo de articulación: Revoluta                         -->
+<!-- Relación entre sistemas de coordenadas: SC{1} to SC{2} -->
+<!-- Torque motor: 15 oz·in = 0.106 N·m                    -->
+<!-- Reductor J2: 127.1 : 1                                -->
+<!-- Torque estimado a la salida: 0.106 × 127.1 = 13.47 N·m -->
+<!-- Rango angular: -35° to +130°                          -->
+<!-- Conversión: -35° = -0.611 rad                         -->
+<!-- Conversión: +130° = 2.269 rad                         -->
+<!-- ======================================================= -->
+
+  <joint name="j2" type="revolute">
+    <origin xyz="-0.025 -0.095 0.16205333" rpy="1.57 0 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.611" upper="2.269" effort="10" velocity="2.0"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- LINK_2                                                 -->
+  <!-- ======================================================= -->
+
+  <link name="link_2">
+    <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN                    -->
+    <!-- ===================================================== -->
+    <inertial>
+      <origin xyz="0.10539325 0.0 0.01621919" rpy="0 0 0"/>
+      <mass value="0.45100885"/>
+      <inertia ixx="0.00280980" ixy="0.0" ixz="0.00003902"
+               iyy="0.00139816" iyz="0.0"
+               izz="0.00377041"/>
+    </inertial>
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_2.stl"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1.0 1.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- GEOMETRÍA DE COLISIÓN                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_2.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<!-- ======================================================= -->
+<!-- ARTICULACIÓN J3                                        -->
+<!-- ======================================================= -->
+<!-- Tipo de articulación: Revoluta                         -->
+<!-- Relación entre sistemas de coordenadas: SC{2} to SC{3} -->
+<!-- Torque motor: 15 oz·in = 0.106 N·m                    -->
+<!-- Reductor J3: 127.1 : 1                                -->
+<!-- Torque estimado a la salida: 0.106 × 127.1 = 13.47 N·m -->
+<!-- Rango angular: ±130°                                  -->
+<!-- Conversión: ±130° = ±2.269 rad                        -->
+<!-- ======================================================= -->
+
+  <joint name="j3" type="revolute">
+    <origin xyz="0.22 0.0 -0.01" rpy="0 0 0"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.269" upper="2.269" effort="10" velocity="2.0"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- LINK_3                                                 -->
+  <!-- ======================================================= -->
+
+  <link name="link_3">
+    <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN                    -->
+    <!-- ===================================================== -->
+    <inertial>
+      <origin xyz="0.10355563 -0.00007485 0.01245472" rpy="0 0 0"/>
+      <mass value="0.33453905"/>
+      <inertia ixx="0.00179957" ixy="0.00000085" ixz="0.00003783"
+               iyy="0.00095300" iyz="0.00000044"
+               izz="0.00251621"/>
+    </inertial>
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_3.stl"/>
+      </geometry>
+      <material name="purple">
+        <color rgba="0.6 0.0 0.8 1.0"/>
+      </material>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- GEOMETRÍA DE COLISIÓN                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_3.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<!-- ======================================================= -->
+<!-- ARTICULACIÓN J4                                        -->
+<!-- ======================================================= -->
+<!-- Tipo de articulación: Revoluta                         -->
+<!-- Relación entre sistemas de coordenadas: SC{3} to SC{4} -->
+<!-- Torque motor: 15 oz·in = 0.106 N·m                    -->
+<!-- Reductor J4: 65.5 : 1                                 -->
+<!-- Torque estimado a la salida: 0.106 × 65.5 = 6.94 N·m  -->
+<!-- Rango angular: ±130°                                  -->
+<!-- Conversión: ±130° = ±2.269 rad                        -->
+<!-- ======================================================= -->
+
+  <joint name="j4" type="revolute">
+    <origin xyz="0.22 0.0 0.00" rpy="0 0 1.57"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.269" upper="2.269" effort="10" velocity="2.0"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- LINK_4                                                 -->
+  <!-- ======================================================= -->
+
+  <link name="link_4">
+    <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN                    -->
+    <!-- ===================================================== -->
+    <inertial>
+      <origin xyz="-0.00000004 -0.02155892 -0.08499989" rpy="0 0 0"/>
+      <mass value="0.43957892"/>
+      <inertia ixx="0.00154062" ixy="-0.00000001" ixz="0.0"
+               iyy="0.00071661" iyz="0.0"
+               izz="0.00092437"/>
+    </inertial>
+
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_4.stl"/>
+      </geometry>
+      <material name="pink">
+        <color rgba="1.0 0.4 0.7 1.0"/>
+      </material>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- GEOMETRÍA DE COLISIÓN                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_4.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<!-- ======================================================= -->
+<!-- ARTICULACIÓN J5                                        -->
+<!-- ======================================================= -->
+<!-- Tipo de articulación: Revoluta                         -->
+<!-- Relación entre sistemas de coordenadas: SC{4} to SC{5} -->
+<!-- Torque motor: 15 oz·in = 0.106 N·m                    -->
+<!-- Reductor J5: 65.5 : 1                                 -->
+<!-- Torque estimado a la salida: 0.106 × 65.5 = 6.94 N·m  -->
+<!-- Rango original: ±570° = ±9.948 rad                    -->
+<!-- Rango usado en URDF: ±360° = ±6.283 rad               -->
+<!-- Nota: se redujo el rango para facilitar la visualización -->
+<!-- ======================================================= -->
+
+  <joint name="j5" type="revolute">
+    <origin xyz="0.0 -0.14790 -0.085" rpy="1.57 1.57 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-6.283" upper="6.283" effort="10" velocity="2.0"/>
+  </joint>
+
+  <!-- ======================================================= -->
+  <!-- LINK_5                                                 -->
+  <!-- ======================================================= -->
+
+  <link name="link_5">
+
+    <inertial>
+      <origin xyz="0.0 0.0 -0.005" rpy="0 0 0"/>
+      <mass value="0.1147285"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+               iyy="0.01" iyz="0.0"
+               izz="0.01"/>
+    </inertial>
+    <!-- ===================================================== -->
+    <!-- PROPIEDADES DINÁMICAS DEL ESLABÓN                    -->
+    <!-- ===================================================== -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_5.stl"/>
+      </geometry>
+      <material name="light_red">
+        <color rgba="1.0 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+    <!-- ===================================================== -->
+    <!-- REPRESENTACIÓN VISUAL                                -->
+    <!-- ===================================================== -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://scorbot_gazebo/meshes/link_5.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+  <!-- ======================================================= -->
+  <!-- ROS 2 CONTROL PARA GAZEBO CON INTERFAZ DE ESFUERZO      -->
+  <!-- ======================================================= -->
+  <!-- ======================================================= -->
+  <!-- TOOL LINK / EFECTOR FINAL                               -->
+  <!-- ======================================================= -->
+  <!-- Este frame representa la punta del efector final.        -->
+  <!-- Se usa para comparar la trayectoria cartesiana deseada   -->
+  <!-- contra la trayectoria real del robot.                    -->
+  <!-- ======================================================= -->
+
+  <link name="tool_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+      <material name="tool_red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="link_5_to_tool" type="fixed">
+    <parent link="link_5"/>
+    <child link="tool_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+<joint name="j1">
+  <command_interface name="effort">
+    <param name="min">-100</param>
+    <param name="max">100</param>
+  </command_interface>
+  <state_interface name="position">
+    <param name="initial_value">0.0</param>
+  </state_interface>
+  <state_interface name="velocity"/>
+</joint>
+
+<joint name="j2">
+  <command_interface name="effort">
+    <param name="min">-100</param>
+    <param name="max">100</param>
+  </command_interface>
+  <state_interface name="position">
+    <param name="initial_value">0.349</param>
+  </state_interface>
+  <state_interface name="velocity"/>
+</joint>
+
+<joint name="j3">
+  <command_interface name="effort">
+    <param name="min">-100</param>
+    <param name="max">100</param>
+  </command_interface>
+  <state_interface name="position">
+    <param name="initial_value">-0.75</param>
+  </state_interface>
+  <state_interface name="velocity"/>
+</joint>
+
+<joint name="j4">
+  <command_interface name="effort">
+    <param name="min">-100</param>
+    <param name="max">100</param>
+  </command_interface>
+  <state_interface name="position">
+    <param name="initial_value">0.0</param>
+  </state_interface>
+  <state_interface name="velocity"/>
+</joint>
+
+<joint name="j5">
+  <command_interface name="effort">
+    <param name="min">-100</param>
+    <param name="max">100</param>
+  </command_interface>
+  <state_interface name="position">
+    <param name="initial_value">1.57</param>
+  </state_interface>
+  <state_interface name="velocity"/>
+</joint>
+  </ros2_control>
+
+
+  <!-- ======================================================= -->
+  <!-- PLUGIN GZ_ROS2_CONTROL                                  -->
+  <!-- ======================================================= -->
+
+  <gazebo>
+    <plugin
+      filename="gz_ros2_control-system"
+      name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>__SCORBOT_CONTROLLERS_YAML__</parameters>
+    </plugin>
+
+    <!-- Reposicionamiento rápido entre evaluaciones.
+         No elimina el robot ni reinicia el mundo. -->
+    <plugin
+      filename="libscorbot_home_state_system.so"
+      name="scorbot_gazebo::ScorbotHomeStateSystem">
+
+      <joint_names>
+        j1 j2 j3 j4 j5
+      </joint_names>
+
+      <!-- Primera muestra de joints_trajectory.csv -->
+      <home_positions>
+        0.000000 0.226002 -0.855270 0.629268 1.570796
+      </home_positions>
+
+      <!-- Dos iteraciones para la prueba inicial. -->
+      <reset_cycles>2</reset_cycles>
+
+      <log_resets>true</log_resets>
+    </plugin>
+  </gazebo>
+</robot>

@@ -1,0 +1,86 @@
+{
+    "trajectories": {
+        "path": "package://scorbot_gazebo/trajectories/joints_trajectory.csv",
+        "column_names": [
+            "q1",
+            "q2",
+            "q3",
+            "q4",
+            "q5"
+        ],
+        "floating_base_path": "package://scorbot_gazebo/trajectories/cartesian_trajectory.csv",
+        "fb_column_names": [
+            "X",
+            "Y",
+            "Z"
+        ]
+    },
+    "command_paths": [
+        "/scorbot_arm_controller/joint_trajectory"
+    ],
+    "state_paths": [
+        "/scorbot_arm_controller/controller_state"
+    ],
+    "client_paths": [
+        "/scorbot_arm_controller"
+    ],
+    "joint_names": [
+        "j1",
+        "j2",
+        "j3",
+        "j4",
+        "j5"
+    ],
+    "pid_parameter_names": {
+        "j1": {
+            "p": "gains.j1.p",
+            "i": "gains.j1.i",
+            "d": "gains.j1.d"
+        },
+        "j2": {
+            "p": "gains.j2.p",
+            "i": "gains.j2.i",
+            "d": "gains.j2.d"
+        },
+        "j3": {
+            "p": "gains.j3.p",
+            "i": "gains.j3.i",
+            "d": "gains.j3.d"
+        },
+        "j4": {
+            "p": "gains.j4.p",
+            "i": "gains.j4.i",
+            "d": "gains.j4.d"
+        },
+        "j5": {
+            "p": "gains.j5.p",
+            "i": "gains.j5.i",
+            "d": "gains.j5.d"
+        }
+    },
+    "cartesian_frames": {
+        "reference": "base_link",
+        "end_effector": "tool_link"
+    },
+    "gazebo": {
+        "world_name": "empty",
+        "control_service": "/world/empty/control"
+    },
+    "pid_bounds": {
+        "p": [
+            0,
+            250
+        ],
+        "i": [
+            0,
+            20
+        ],
+        "d": [
+            0,
+            1
+        ]
+    },
+    "evaluation": {
+        "initial_settle_steps": 2
+    }
+}
